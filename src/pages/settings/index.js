@@ -1,6 +1,7 @@
 const nunjucks = require('../../helpers/nunjucks')
 
 const handler = async ({ event }) => {
+  console.log(event)
   const html = nunjucks.render('pages/settings.njk', {
     pageTitle: 'Settings'
   })

@@ -1,5 +1,7 @@
 {% extends "template.njk" %}
 
+{% from "components/dropdown/macro.njk" import dropdown %}
+
 {% set pageTitle = "Home" %}
 
 {% block pageTitle %}
@@ -7,6 +9,16 @@
 {% endblock %}
 
 {% block content %}
-<section>Scale Options</section>
-<section>Fretboard</section>
+<section>
+  <form method="post">
+    <input type="hidden" id="form" name="form" value="scale">
+    <label for="tonic">Scale:</label>
+    {{ dropdown(tonicsDropdown) }}
+    {{ dropdown(scalesDropdown) }}
+    <input type="submit" value="Submit">
+  </form>
+</section>
+<section>
+  <h2>Fretboard</h2>
+</section>
 {% endblock %}

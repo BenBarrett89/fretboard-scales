@@ -1,0 +1,11 @@
+<select id="{{ params.name }}" name="{{ params.name }}">
+  {% for option in params.options %}
+  {% if option.selected %}
+  <option value="{{option.value}}" selected>{{option.label}}</option>
+  {% else %}
+  <option value="{{option.value}}">{{option.label}}</option>
+  {% endif %}
+  {% else %}
+  <option value="default">Default</li>
+  {% endfor %}
+</select>

@@ -10,11 +10,14 @@ const app = express()
 
 const startApp = async ({ app, constants, cookieParser, express, fs, getCookieOrSetDefault, host, importFresh, port }) => {
 
+  app.use(express.urlencoded({
+    extended: true
+  }))
   app.use(cookieParser())
 
   try {
     app.use('/assets', express.static('../dist/assets'))
-    app.get('/*', async (request, response, next) => {
+    app.all('/*', async (request, response, next) => {
 
       const requestPath = request.path
 
@@ -38,6 +41,7 @@ const startApp = async ({ app, constants, cookieParser, express, fs, getCookieOr
         const page = importFresh(pagePath)
 
         const event = {
+          body: request.body,
           state: {
             display: displayCookie,
             instrument: instrumentCookie,
@@ -47,9 +51,13 @@ const startApp = async ({ app, constants, cookieParser, express, fs, getCookieOr
 
         const {
           body,
+          cookies,
           headers,
           statusCode
-        } = await page.handler({ event })
+        } = await page.handler({ constants, event })
+
+        cookies &&
+          cookies.forEach(cookie => response.cookie(cookie.name, JSON.stringify(cookie.value)))
 
         response
           .set(headers)
@@ -61,7 +69,10 @@ const startApp = async ({ app, constants, cookieParser, express, fs, getCookieOr
     app.listen(port, host)
     console.log(`Listening on port ${port}`)
   } catch (error) {
-    console.log(error)
+    console.log(error.stack)
+    response
+      .status(500)
+      .send(error.stack)
   }
 }
 
