@@ -22,11 +22,13 @@ const handler = async ({ constants, event }) => {
 
   const scalesDropdown = {
     name: 'scale',
-    options: getScalesDropdownOptions({ selectedScale: state.scale.name, scales: constants.scales })
+    options: getScalesDropdownOptions({ selectedScale: state.scale.name, scales: constants.scales }),
+    submitOnChange: true,
   }
   const tonicsDropdown = {
     name: 'tonic',
-    options: getTonicsDropdownOptions({ selectedTonic: state.scale.tonic, tonics: constants.tonics })
+    options: getTonicsDropdownOptions({ selectedTonic: state.scale.tonic, tonics: constants.tonics }),
+    submitOnChange: true,
   }
 
   const html = nunjucks.render('pages/home.njk', {
