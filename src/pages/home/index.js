@@ -1,5 +1,7 @@
 const nunjucks = require('../../helpers/nunjucks')
 
+
+const getDistanceFromNut = require('../../helpers/getDistanceFromNut')
 const getScalesDropdownOptions = require('../../helpers/getScalesDropdownOptions')
 const getTonicsDropdownOptions = require('../../helpers/getTonicsDropdownOptions')
 
@@ -20,6 +22,7 @@ const handler = async ({ constants, event }) => {
     state = Object.assign(state, {}, { scale: newScale })
   }
 
+  // Scale
   const scalesDropdown = {
     name: 'scale',
     options: getScalesDropdownOptions({ selectedScale: state.scale.name, scales: constants.scales }),
@@ -31,8 +34,36 @@ const handler = async ({ constants, event }) => {
     submitOnChange: true,
   }
 
+  // Fretboard
+  const fretboardSize = 1500
+  const frets = Array(state.instrument.frets)
+    .fill({})
+    .map((_, index) => ({ fretNumber: index + 1, distanceFromNut: getDistanceFromNut({ scaleLength: state.instrument.scaleLength, fretNumber: index + 1 }) }))
+    .map((fret, index, frets) => {
+      const previousDistance = index === 0 ? 0 : frets[index - 1].distanceFromNut
+      return Object.assign(fret, {}, {
+        fretSize: fret.distanceFromNut - previousDistance
+      })
+    })
+    .reduce((_, fret, index, frets) => {
+      if (index + 1 === frets.length) {
+        const scale = fret.distanceFromNut
+        return frets.map(fret => {
+          const widthPercentage = (fret.fretSize / scale) * 100
+          return Object.assign(fret, {}, {
+            widthPercentage,
+            size: widthPercentage * (fretboardSize / 100)
+          })
+        })
+      }
+    }, [])
+
   const html = nunjucks.render('pages/home.njk', {
     pageTitle: 'Home',
+    fretboardParams: {
+      frets,
+      size: fretboardSize
+    },
     scalesDropdown,
     tonicsDropdown
   })

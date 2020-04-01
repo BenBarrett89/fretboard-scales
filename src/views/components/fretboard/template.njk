@@ -1,0 +1,11 @@
+<table>
+  <tbody>
+    <tr>
+      {% for fret in params.frets %}
+      <td style="width:{{fret.size}}px;">
+        {{fret.fretNumber}}
+      </td>
+      {% endfor %}
+    </tr>
+  </tbody>
+</table>

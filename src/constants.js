@@ -32,7 +32,7 @@ module.exports = {
     },
     instrument: {
       name: 'instrument',
-      defaultValue: { strings: [48, 43, 38, 33, 28, 23], frets: 24 }
+      defaultValue: { strings: [48, 43, 38, 33, 28, 23], frets: 24, scaleLength: 26 }
     },
     scale: {
       name: 'scale',
