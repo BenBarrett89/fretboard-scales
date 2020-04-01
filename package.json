@@ -4,7 +4,10 @@
   "description": "A fretboard scale display application while trying to learn Nunjucks",
   "main": "index.js",
   "scripts": {
-    "start": "cd src && node index.js"
+    "build:all": "npm run build:js",
+    "build:js": "mkdir -p ./dist/assets/js && rollup -c",
+    "build:js:babel": "mkdir -p ./dist/assets/js && npx babel ./src/assets/js --out-dir ./dist/assets/js",
+    "start": "npm run build:all && cd src && node index.js"
   },
   "repository": {
     "type": "git",
@@ -17,8 +20,20 @@
   },
   "homepage": "https://github.com/BenBarrett89/fretboard-scales#readme",
   "dependencies": {
+    "cookie-parser": "^1.4.5",
+    "core-js": "^3.6.4",
     "express": "^4.17.1",
     "import-fresh": "^3.2.1",
-    "nunjucks": "^3.2.1"
+    "nunjucks": "^3.2.1",
+    "rollup-plugin-uglify": "^6.0.4"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.0",
+    "@rollup/plugin-node-resolve": "^7.1.1",
+    "babel-preset-minify": "^0.5.1",
+    "rollup": "^2.3.2",
+    "rollup-plugin-babel": "^4.4.0"
   }
 }
