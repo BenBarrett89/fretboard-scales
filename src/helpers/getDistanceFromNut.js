@@ -1,0 +1,1 @@
+module.exports = ({ scaleLength, fretNumber }) => scaleLength - (scaleLength / (Math.pow(2, (fretNumber / 12))))

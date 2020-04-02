@@ -1,0 +1,18 @@
+{% from "components/footer/macro.njk" import footer %}
+{% from "components/header/macro.njk" import header %}
+{% from "components/nav/macro.njk" import nav %}
+
+<html>
+  <head>
+    <title>{% block pageTitle %}Fretboard Scales{% endblock %}</title>
+  </head>
+  <body>
+    {{ header() }}
+    {{ nav() }}
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+    {{ footer() }}
+  </body>
+  <script src="/assets/js/page.js"></script>
+</html>
