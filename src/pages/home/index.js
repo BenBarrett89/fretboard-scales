@@ -22,7 +22,30 @@ const handler = async ({ constants, event }) => {
     state = Object.assign(state, {}, { scale: newScale })
   }
 
-  // Scale
+  const scaleObject = constants.scales.find(scale => scale.name === state.scale.name)
+  const tonicObject = constants.tonics.find(tonic => tonic.name === state.scale.tonic)
+
+  const scaleNotes = scaleObject.intervals
+    .reduce((notes, interval, index, intervals) => {
+      const distanceFromTonic = intervals.slice(0, index + 1).reduce((total, interval) => total + interval, 0)
+      const modulo = (tonicObject.modulo + distanceFromTonic) % 12
+      return modulo === tonicObject.modulo
+        ? notes
+        : notes.concat({
+          distanceFromTonic,
+          degree: index + 2,
+          color: scaleObject.colors[index + 1],
+          ...constants.tonics.find(tonic => tonic.modulo === modulo),
+          inScale: true
+        })
+    }, [{
+      distanceFromTonic: 0,
+      degree: 1,
+      color: scaleObject.colors[0],
+      ...tonicObject,
+      inScale: true
+    }])
+
   const scalesDropdown = {
     name: 'scale',
     options: getScalesDropdownOptions({ selectedScale: state.scale.name, scales: constants.scales }),
@@ -34,7 +57,6 @@ const handler = async ({ constants, event }) => {
     submitOnChange: true,
   }
 
-  // Fretboard
   const fretboardSize = 1500
   const frets = Array(state.instrument.frets)
     .fill({})
@@ -58,10 +80,41 @@ const handler = async ({ constants, event }) => {
       }
     }, [])
 
+  const strings = state.instrument.strings
+    .map((string, stringIndex) => [{
+      string: stringIndex,
+      inScale: false,
+      open: true,
+      noteNumber: string,
+      modulo: string % 12,
+      octave: Math.floor(string / 12) - 1,
+      ...constants.tonics.find(tonic => tonic.modulo === (string % 12)),
+      ...frets[frets.length - 1],
+      fretNumber: 0,
+      ...scaleNotes.find(note => note.modulo === (string % 12))
+    }].concat(frets.map((fret, fretIndex) => {
+      const noteNumber = (string + fretIndex + 1)
+      const modulo = noteNumber % 12
+      const octave = Math.floor(noteNumber / 12) - 1
+      const note = constants.tonics.find(tonic => tonic.modulo === modulo)
+      const scaleNote = scaleNotes.find(note => note.modulo === modulo)
+      return {
+        inScale: false,
+        string: stringIndex,
+        fret: fretIndex + 1,
+        noteNumber,
+        modulo,
+        octave,
+        ...note,
+        ...fret,
+        ...scaleNote
+      }
+    })))
+
   const html = nunjucks.render('pages/home.njk', {
     pageTitle: 'Home',
     fretboardParams: {
-      frets,
+      strings,
       size: fretboardSize
     },
     scalesDropdown,

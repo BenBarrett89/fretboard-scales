@@ -26,8 +26,6 @@ const startApp = async ({ app, constants, cookieParser, express, fs, getCookieOr
 
       const fileExists = fs.existsSync(pagePath)
 
-      console.log(requestPath)
-
       if (!fileExists) {
         response.status(404).send('404')
       } else if (requestPath.startsWith('/assets')) {

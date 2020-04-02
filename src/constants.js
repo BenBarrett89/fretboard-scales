@@ -1,13 +1,15 @@
+const hookpadColors = ['#fc0006', '#fda112', '#ebe509', '#1ccf02', '#3600ff', '#a700df', '#fb00bf']
+
 const scales = [
-  { name: 'major', intervals: [2, 2, 1, 2, 2, 2, 1], label: 'Major' },
-  { name: 'minor', intervals: [2, 1, 2, 2, 1, 2, 2], label: 'Minor' },
-  { name: 'ionian', intervals: [2, 2, 1, 2, 2, 2, 1], label: 'Ionian' },
-  { name: 'dorian', intervals: [2, 1, 2, 2, 2, 1, 2], label: 'Dorian' },
-  { name: 'phrygian', intervals: [1, 2, 2, 2, 1, 2, 2], label: 'Phrygian' },
-  { name: 'lydian', intervals: [2, 2, 2, 1, 2, 2, 1], label: 'Lydian' },
-  { name: 'mixolydian', intervals: [2, 2, 1, 2, 2, 1, 2], label: 'Mixolydian' },
-  { name: 'aeolian', intervals: [2, 1, 2, 2, 1, 2, 2], label: 'Aeolian' },
-  { name: 'locrian', intervals: [1, 2, 2, 1, 2, 2, 2], label: 'Locrian' },
+  { name: 'major', intervals: [2, 2, 1, 2, 2, 2, 1], label: 'Major', colors: hookpadColors },
+  { name: 'minor', intervals: [2, 1, 2, 2, 1, 2, 2], label: 'Minor', colors: hookpadColors.slice(5, 7).concat(hookpadColors.slice(0, 5)) },
+  { name: 'ionian', intervals: [2, 2, 1, 2, 2, 2, 1], label: 'Ionian', colors: hookpadColors },
+  { name: 'dorian', intervals: [2, 1, 2, 2, 2, 1, 2], label: 'Dorian', colors: hookpadColors.slice(1, 7).concat(hookpadColors.slice(0, 1)) },
+  { name: 'phrygian', intervals: [1, 2, 2, 2, 1, 2, 2], label: 'Phrygian', colors: hookpadColors.slice(2, 7).concat(hookpadColors.slice(0, 2)) },
+  { name: 'lydian', intervals: [2, 2, 2, 1, 2, 2, 1], label: 'Lydian', colors: hookpadColors.slice(3, 7).concat(hookpadColors.slice(0, 3)) },
+  { name: 'mixolydian', intervals: [2, 2, 1, 2, 2, 1, 2], label: 'Mixolydian', colors: hookpadColors.slice(4, 7).concat(hookpadColors.slice(0, 4)) },
+  { name: 'aeolian', intervals: [2, 1, 2, 2, 1, 2, 2], label: 'Aeolian', colors: hookpadColors.slice(5, 7).concat(hookpadColors.slice(0, 5)) },
+  { name: 'locrian', intervals: [1, 2, 2, 1, 2, 2, 2], label: 'Locrian', colors: hookpadColors.slice(6, 7).concat(hookpadColors.slice(0, 6)) },
 ]
 const tonics = [
   { name: 'C', label: { regular: 'C' }, modulo: 0 },

@@ -1,11 +1,21 @@
 <table>
   <tbody>
+    {% for string in params.strings %}
     <tr>
-      {% for fret in params.frets %}
-      <td style="width:{{fret.size}}px;">
-        {{fret.fretNumber}}
+      {% for fret in string %}
+      {% if fret.inScale %}
+      <td style="width:{{fret.size}}px;text-align:center;background-color:{{fret.color}};">
+      {% else %}
+      <td style="width:{{fret.size}}px;text-align:center;">
+      {% endif %}
+        {% if fret.degree === 1 %}
+        <strong>{{fret.name}}{{fret.octave}}</strong>
+        {% else %}
+        {{fret.name}}{{fret.octave}}
+        {% endif %}
       </td>
       {% endfor %}
     </tr>
+    {% endfor %}
   </tbody>
 </table>
